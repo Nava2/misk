@@ -17,6 +17,7 @@ dependencies {
   api(project(":misk-jobqueue"))
   api(project(":misk-transactional-jobqueue"))
   implementation(Dependencies.guava)
+  implementation(Dependencies.jakartaInject)
   implementation(project(":misk-core"))
   implementation(project(":misk-service"))
 }

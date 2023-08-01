@@ -6,7 +6,7 @@ import com.google.crypto.tink.integration.gcpkms.GcpKmsClient
 import com.google.inject.Provides
 import com.google.inject.Singleton
 import misk.inject.KAbstractModule
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 
 /**
  * AWS specific KMS client module.

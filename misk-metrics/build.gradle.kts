@@ -23,6 +23,7 @@ dependencies {
   testFixturesImplementation(Dependencies.kotlinStdLibJdk8)
 
   testImplementation(Dependencies.assertj)
+  testImplementation(Dependencies.guice)
   testImplementation(Dependencies.junitApi)
   testImplementation(project(":misk-metrics"))
   testImplementation(project(":misk-testing"))

@@ -5,7 +5,7 @@ import wisp.deployment.EnvironmentVariableLoader
 import wisp.deployment.FakeEnvironmentVariableLoader
 import wisp.deployment.RealEnvironmentVariableLoader
 import com.google.inject.Inject
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 
 /*
  * Soft deprecating for wisp.deployment.EnvironmentVariableLoader

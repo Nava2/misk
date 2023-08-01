@@ -37,6 +37,7 @@ dependencies {
   implementation(Dependencies.wispLogging)
 
   testImplementation(Dependencies.assertj)
+  testImplementation(Dependencies.jakartaInject)
   testImplementation(Dependencies.junitApi)
   testImplementation(Dependencies.okHttp)
   testImplementation(Dependencies.protobufJava)

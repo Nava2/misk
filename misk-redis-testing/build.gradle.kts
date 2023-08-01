@@ -9,13 +9,14 @@ plugins {
 }
 
 dependencies {
+  api(Dependencies.guice)
+  api(Dependencies.jakartaInject)
   api(Dependencies.jedis)
   api(project(":misk-inject"))
   api(project(":misk-redis"))
   api(project(":misk-testing"))
   implementation(Dependencies.dockerApi)
   implementation(Dependencies.guava)
-  implementation(Dependencies.guice)
   implementation(Dependencies.kotlinLogging)
   implementation(Dependencies.okio)
   implementation(Dependencies.wispContainersTesting)

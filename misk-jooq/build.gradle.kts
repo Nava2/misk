@@ -14,17 +14,18 @@ plugins {
 
 dependencies {
   api(Dependencies.guava)
+  api(Dependencies.guice)
   api(Dependencies.jooq)
   api(Dependencies.kotlinLogging)
   api(project(":misk-core"))
   api(project(":misk-inject"))
   api(project(":misk-jdbc"))
-  implementation(Dependencies.guice)
   implementation(Dependencies.kotlinRetry)
   implementation(Dependencies.kotlinxCoroutines)
   implementation(Dependencies.wispLogging)
 
   testImplementation(Dependencies.assertj)
+  testImplementation(Dependencies.jakartaInject)
   testImplementation(Dependencies.junitApi)
   testImplementation(Dependencies.wispDeployment)
   testImplementation(Dependencies.wispTimeTesting)

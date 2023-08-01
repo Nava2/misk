@@ -5,7 +5,7 @@ import misk.testing.MiskTestModule
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import com.google.inject.Inject
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 
 @MiskTest
 class MapBinderTest {

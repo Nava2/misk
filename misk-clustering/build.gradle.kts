@@ -10,12 +10,12 @@ plugins {
 
 dependencies {
   api(Dependencies.guava)
+  api(Dependencies.guice)
   api(Dependencies.kotlinLogging)
   api(Dependencies.wispConfig)
   api(Dependencies.wispLeaseTesting)
   api(project(":misk-inject"))
   implementation(Dependencies.errorproneAnnotations)
-  implementation(Dependencies.guice)
   implementation(Dependencies.kubernetesClient)
   implementation(Dependencies.kubernetesClientApi)
   implementation(Dependencies.okHttp)

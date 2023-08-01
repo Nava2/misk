@@ -8,7 +8,7 @@ import wisp.resources.ClasspathResourceLoaderBackend
 import wisp.resources.FakeFilesystemLoaderBackend
 import wisp.resources.FilesystemLoaderBackend
 import wisp.resources.MemoryResourceLoaderBackend
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 import com.google.inject.Singleton
 import wisp.resources.ResourceLoader as WispResourceLoader
 

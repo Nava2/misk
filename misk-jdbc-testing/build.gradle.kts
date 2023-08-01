@@ -11,11 +11,11 @@ plugins {
 dependencies {
   api(Dependencies.datasourceProxy)
   api(Dependencies.guava)
+  api(Dependencies.guice)
   api(Dependencies.moshi)
   api(Dependencies.okHttp)
   api(project(":misk-inject"))
   api(project(":misk-jdbc"))
-  implementation(Dependencies.guice)
   implementation(Dependencies.hikariCp)
   implementation(Dependencies.kotlinLogging)
   implementation(Dependencies.okio)

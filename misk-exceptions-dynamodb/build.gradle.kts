@@ -11,11 +11,11 @@ plugins {
 dependencies {
   api(Dependencies.awsDynamodb)
   api(Dependencies.awsJavaSdkCore)
+  api(Dependencies.guice)
   api(Dependencies.slf4jApi)
   api(project(":misk"))
   api(project(":misk-actions"))
   api(project(":misk-inject"))
-  implementation(Dependencies.guice)
   implementation(Dependencies.okHttp)
   implementation(project(":misk-core"))
 

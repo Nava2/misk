@@ -10,6 +10,7 @@ plugins {
 
 dependencies {
   api(Dependencies.guava)
+  api(Dependencies.guice)
   api(Dependencies.kotlinLogging)
   api(Dependencies.kotlinRetry)
   api(Dependencies.okHttp)
@@ -19,7 +20,6 @@ dependencies {
   api(Dependencies.wispToken)
   api(project(":misk-config"))
   api(project(":misk-inject"))
-  implementation(Dependencies.guice)
   implementation(Dependencies.kotlinStdLibJdk8)
   implementation(Dependencies.wispResourceLoader)
   implementation(Dependencies.wispTokenTesting)

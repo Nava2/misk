@@ -91,6 +91,8 @@ object Dependencies {
   val jettyUtil = "org.eclipse.jetty:jetty-util"
   val jettyWebsocketApi = "org.eclipse.jetty.websocket:websocket-jetty-api"
   val jettyWebsocketServer = "org.eclipse.jetty.websocket:websocket-jetty-server"
+  @Deprecated("Use jakartaInject", replaceWith = ReplaceWith("jakartaInject"))
+  val javaxInject = "javax.inject:javax.inject:1"
   val jgit = "org.eclipse.jgit:org.eclipse.jgit:5.12.0.202106070339-r"
   val jooq = "org.jooq:jooq:3.18.2"
   val junitApi = "org.junit.jupiter:junit-jupiter-api:5.9.3"

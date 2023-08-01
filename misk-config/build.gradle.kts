@@ -9,15 +9,16 @@ plugins {
 }
 
 dependencies {
+  api(Dependencies.guice)
   api(Dependencies.jacksonAnotations)
   api(Dependencies.jacksonDatabind)
+  api(Dependencies.jakartaInject)
   api(Dependencies.wispConfig)
   api(Dependencies.wispDeployment)
   api(Dependencies.wispResourceLoader)
   api(project(":misk-inject"))
   implementation(Dependencies.apacheCommonsLang3)
   implementation(Dependencies.guava)
-  implementation(Dependencies.guice)
   implementation(Dependencies.jacksonCore)
   implementation(Dependencies.jacksonDataformatYaml)
   implementation(Dependencies.jacksonJsr310)

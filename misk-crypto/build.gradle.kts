@@ -13,6 +13,7 @@ dependencies {
   api(Dependencies.awsJavaSdkCore)
   api(Dependencies.awsS3)
   api(Dependencies.guice)
+  api(Dependencies.jakartaInject)
   api(Dependencies.tink)
   api(Dependencies.tinkAwskms)
   api(Dependencies.tinkGcpkms)

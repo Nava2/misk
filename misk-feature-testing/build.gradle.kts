@@ -10,11 +10,11 @@ plugins {
 
 dependencies {
   api(Dependencies.guava)
+  api(Dependencies.guice)
   api(Dependencies.wispFeature)
   api(Dependencies.wispFeatureTesting)
   api(project(":misk-feature"))
   api(project(":misk-inject"))
-  implementation(Dependencies.guice)
   implementation(Dependencies.kotlinStdLibJdk8)
   implementation(Dependencies.moshi)
   implementation(project(":misk-service"))

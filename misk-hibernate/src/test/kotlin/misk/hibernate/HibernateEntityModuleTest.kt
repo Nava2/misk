@@ -4,7 +4,7 @@ import com.google.inject.Guice
 import misk.inject.getSetOf
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 
 internal class HibernateEntityModuleTest {
   @Test fun multipleDataSources() {

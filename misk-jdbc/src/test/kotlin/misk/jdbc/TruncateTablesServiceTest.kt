@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 import wisp.config.Config
 import wisp.deployment.TESTING
 import com.google.inject.Inject
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 
 @MiskTest(startService = true)
 internal class TruncateTablesServiceTest {

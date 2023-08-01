@@ -29,7 +29,7 @@ import wisp.deployment.TESTING
 import java.time.Instant
 import com.google.inject.Inject
 import com.google.inject.Provider
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

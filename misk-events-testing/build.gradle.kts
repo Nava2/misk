@@ -9,9 +9,9 @@ plugins {
 }
 
 dependencies {
+  api(Dependencies.guice)
   api(project(":misk-events-core"))
   api(project(":misk-inject"))
-  implementation(Dependencies.guice)
 
   testImplementation(Dependencies.assertj)
   testImplementation(Dependencies.junitApi)

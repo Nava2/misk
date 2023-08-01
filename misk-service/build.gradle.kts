@@ -17,6 +17,8 @@ dependencies {
   implementation(Dependencies.wispLogging)
 
   testImplementation(Dependencies.assertj)
+  testImplementation(Dependencies.javaxInject)
+  testImplementation(Dependencies.jakartaInject)
   testImplementation(Dependencies.junitApi)
   testImplementation(Dependencies.kotlinTest)
   testImplementation(project(":misk-testing"))

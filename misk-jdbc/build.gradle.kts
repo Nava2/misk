@@ -13,6 +13,7 @@ dependencies {
   api(Dependencies.datasourceProxy)
   api(Dependencies.dockerApi)
   api(Dependencies.dockerCore)
+  api(Dependencies.guice)
   api(Dependencies.guava)
   api(Dependencies.moshi)
   api(Dependencies.openTracingApi)
@@ -24,7 +25,6 @@ dependencies {
   api(project(":misk-inject"))
   implementation(Dependencies.dockerTransport)
   implementation(Dependencies.dockerTransportHttpClient)
-  implementation(Dependencies.guice)
   implementation(Dependencies.hikariCp)
   implementation(Dependencies.kotlinLogging)
   implementation(Dependencies.okio)
@@ -55,6 +55,7 @@ dependencies {
   testFixturesRuntimeOnly(Dependencies.hsqldb)
 
   testImplementation(Dependencies.assertj)
+  testImplementation(Dependencies.jakartaInject)
   testImplementation(Dependencies.junitApi)
   testImplementation(Dependencies.kotlinTest)
   testImplementation(Dependencies.mockitoCore)

@@ -25,6 +25,7 @@ dependencies {
 
   testImplementation(Dependencies.assertj)
   testImplementation(Dependencies.guice)
+  testImplementation(Dependencies.jakartaInject)
   testImplementation(Dependencies.junitApi)
   testImplementation(Dependencies.kotlinTest)
   testImplementation(Dependencies.moshi)

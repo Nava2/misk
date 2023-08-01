@@ -14,6 +14,7 @@ dependencies {
   api(Dependencies.guice)
   api(project(":misk"))
   api(project(":misk-inject"))
+  implementation(Dependencies.jakartaInject)
   implementation(Dependencies.kotlinLogging)
   implementation(Dependencies.wispLease)
   implementation(Dependencies.wispLogging)

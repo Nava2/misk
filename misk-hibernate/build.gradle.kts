@@ -51,6 +51,7 @@ dependencies {
   implementation(project(":misk-service"))
 
   testImplementation(Dependencies.assertj)
+  testImplementation(Dependencies.jakartaInject)
   testImplementation(Dependencies.junitApi)
   testImplementation(Dependencies.kotlinTest)
   testImplementation(Dependencies.logbackClassic)

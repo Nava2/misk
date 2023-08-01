@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import misk.MiskCaller
 import misk.scope.ActionScoped
 import misk.web.HttpCall
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 import com.google.inject.Singleton
 
 /**

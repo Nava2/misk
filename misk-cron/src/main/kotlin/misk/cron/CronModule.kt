@@ -12,7 +12,7 @@ import misk.inject.toKey
 import misk.tasks.RepeatedTaskQueue
 import misk.tasks.RepeatedTaskQueueFactory
 import java.time.ZoneId
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 
 class CronModule @JvmOverloads constructor(
   private val zoneId: ZoneId,

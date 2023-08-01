@@ -18,7 +18,7 @@ import wisp.config.Config
 import wisp.deployment.TESTING
 import java.sql.Connection
 import com.google.inject.Inject
-import javax.inject.Qualifier
+import jakarta.inject.Qualifier
 
 @MiskTest(startService = true)
 internal class VitessSchemaMigratorTest {

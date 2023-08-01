@@ -22,6 +22,7 @@ dependencies {
   api(project(":misk-feature"))
   api(project(":misk-inject"))
   api(project(":misk-jobqueue"))
+  implementation(Dependencies.jakartaInject)
   implementation(Dependencies.kotlinLogging)
   implementation(Dependencies.moshi)
   implementation(Dependencies.openTracingApi)
