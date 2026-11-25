@@ -25,16 +25,15 @@ import okio.BufferedSink
 import okio.buffer
 import okio.sink
 import okio.source
+import org.eclipse.jetty.ee9.nested.Request
+import org.eclipse.jetty.ee9.nested.Response
+import org.eclipse.jetty.ee9.websocket.server.JettyServerUpgradeResponse
+import org.eclipse.jetty.ee9.websocket.server.JettyWebSocketServlet
+import org.eclipse.jetty.ee9.websocket.server.JettyWebSocketServletFactory
 import org.eclipse.jetty.http.BadMessageException
 import org.eclipse.jetty.http.HttpMethod
-import org.eclipse.jetty.server.Request
-import org.eclipse.jetty.server.Response
 import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.unixdomain.server.UnixDomainServerConnector
-import org.eclipse.jetty.unixsocket.server.UnixSocketConnector
-import org.eclipse.jetty.websocket.server.JettyServerUpgradeResponse
-import org.eclipse.jetty.websocket.server.JettyWebSocketServlet
-import org.eclipse.jetty.websocket.server.JettyWebSocketServletFactory
 
 @Singleton
 internal class WebActionsServlet
@@ -298,10 +297,7 @@ private fun extractLinkLayerLocalAddress(request: HttpServletRequest): SocketAdd
   return when (connector) {
     is UnixDomainServerConnector -> SocketAddress.Unix(connector.unixDomainPath.toString())
 
-    is UnixSocketConnector -> SocketAddress.Unix(connector.unixSocket)
-
-    is ServerConnector ->
-      SocketAddress.Network(httpChannel.endPoint.remoteAddress.address.hostAddress, connector.localPort)
+    is ServerConnector -> SocketAddress.Network(httpChannel.remoteAddress.address.hostAddress, connector.localPort)
 
     else -> throw IllegalStateException("Unknown socket connector.")
   }
