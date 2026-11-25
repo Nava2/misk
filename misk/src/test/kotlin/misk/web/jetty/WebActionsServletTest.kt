@@ -27,7 +27,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Assumptions
 import org.junit.jupiter.api.Test
 
 @MiskTest(startService = true)
@@ -36,7 +35,7 @@ class WebActionsServletTest {
 
   @Inject internal lateinit var jettyService: JettyService
 
-  private var socketName: String = "@udstest" + UUID.randomUUID().toString()
+  private var socketName: String = "/tmp/udstest-socket-" + UUID.randomUUID().toString()
   private var fileSocketName: String = "/tmp/udstest" + UUID.randomUUID().toString()
 
   @Test
@@ -54,10 +53,28 @@ class WebActionsServletTest {
   }
 
   @Test
-  fun malformedUriQueryParamsResponseDoesNotContainStacktrace() {
+  fun incompleteUtf8EncodingDoesNotFail() {
+    val response = get(path = "/potato", viaUDS = false, viaFileUDS = false, encodedQuery = "test" to "%C1%BF")
+
+    assertThat(response.body.string()).isEqualTo("TestActionResponse(text=foo)")
+    assertThat(response.code).isEqualTo(200)
+  }
+
+  @Test
+  fun malformedUriQueryParamsAreTolerated() {
+    // Jetty 11 rejected this with a 400 that misk turned into "400: Unable to parse URI query". Jetty 12 accepts it and
+    // leaves the query parameters undecoded, so the request is served normally.
     val response = get(path = "/potato", viaUDS = false, viaFileUDS = false, encodedQuery = "test" to "%3C%a%3C")
 
-    assertThat(response.body.string()).isEqualTo("400: Unable to parse URI query")
+    assertThat(response.body.string()).isEqualTo("TestActionResponse(text=foo)")
+    assertThat(response.code).isEqualTo(200)
+  }
+
+  @Test
+  fun invalidPathCharactersReturns400() {
+    val response = get(path = "/potato%00bb", viaUDS = false, viaFileUDS = false)
+
+    assertThat(response.body.string()).contains("HTTP ERROR 400 Bad Request")
     assertThat(response.code).isEqualTo(400)
   }
 
@@ -69,7 +86,6 @@ class WebActionsServletTest {
 
   @Test
   fun fileUdsSocketSuccess() {
-    Assumptions.assumeTrue(isJEP380Supported(fileSocketName))
     assertFilePermissions(fileSocketName)
     val response = get("/potato", false, true)
     assertThat(response.header("ActualSocketName")).isEqualTo(fileSocketName)
@@ -102,6 +118,7 @@ class WebActionsServletTest {
           )
           .build()
       )
+      chain.proceed(chain.httpCall)
     }
 
     class Factory : NetworkInterceptor.Factory {
