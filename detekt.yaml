@@ -30,6 +30,15 @@ style:
       # Until moved to Guice 7, jakarta.inject.Provider causes issues with type overloads in Guice 6
       - value: 'jakarta.inject.Provider'
         reason: 'To be Guice 6 compliant, use `com.google.inject.Provider`'
+      # Jetty 12 moved the servlet-based APIs into the ee9 modules. The pre-Jetty-12 packages no longer exist.
+      - value: 'org.eclipse.jetty.servlet.*'
+        reason: 'Jetty 12 moved servlet support to `org.eclipse.jetty.ee9.servlet`'
+      - value: 'org.eclipse.jetty.servlets.*'
+        reason: 'Jetty 12 moved servlet filters to `org.eclipse.jetty.ee9.servlets`'
+      - value: 'org.eclipse.jetty.websocket.*'
+        reason: 'Jetty 12 moved servlet websockets to `org.eclipse.jetty.ee9.websocket`'
+      - value: 'org.eclipse.jetty.unixsocket.*'
+        reason: 'Jetty 12 removed the unixsocket connector; use `org.eclipse.jetty.unixdomain.server`'
     excludes:
       - '**/wisp/wisp-moshi/src/*/kotlin/wisp/moshi/ProviderJsonAdapter*.kt'
 
