@@ -225,7 +225,7 @@ class Http2ConnectivityTest {
     @Get("/disconnect/empty")
     @ResponseContentType(MediaTypes.TEXT_PLAIN_UTF8)
     fun disconnect(): Response<String> {
-      val request = actionScopedServletRequest.get() as org.eclipse.jetty.server.Request
+      val request = actionScopedServletRequest.get() as org.eclipse.jetty.ee9.nested.Request
       request.httpChannel.abort(Exception("boom")) // Synthesize a connectivity failure.
 
       return Response(body = "")
@@ -239,7 +239,7 @@ class Http2ConnectivityTest {
     @Get("/disconnect/large")
     @ResponseContentType(MediaTypes.TEXT_PLAIN_UTF8)
     fun disconnect(): ResponseBody {
-      val request = actionScopedServletRequest.get() as org.eclipse.jetty.server.Request
+      val request = actionScopedServletRequest.get() as org.eclipse.jetty.ee9.nested.Request
       request.httpChannel.abort(Exception("boom")) // Synthesize a connectivity failure.
 
       return object : ResponseBody {

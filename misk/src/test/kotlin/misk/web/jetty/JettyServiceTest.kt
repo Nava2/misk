@@ -9,7 +9,6 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.handler.StatisticsHandler
 import org.eclipse.jetty.server.handler.gzip.GzipHandler
-import org.eclipse.jetty.util.MultiException
 import org.eclipse.jetty.util.thread.ThreadPool
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.doThrow
@@ -19,24 +18,25 @@ import org.mockito.Mockito.`when`
 class JettyServiceTest {
 
   @Test
-  fun isJEP380Supported() {
-    assertThat(isJEP380Supported("", 16)).isFalse()
-    assertThat(isJEP380Supported("@socket.sock", 16)).isFalse()
-    assertThat(isJEP380Supported("\u0000socket.sock", 16)).isFalse()
-    assertThat(isJEP380Supported("socket.sock", 15)).isFalse()
-    assertThat(isJEP380Supported("socket.sock", 16)).isTrue()
-    assertThat(isJEP380Supported("/socket.sock", 16)).isTrue()
+  fun `only file paths are accepted for unix domain sockets`() {
+    requireFileUnixDomainSocketPath("/tmp/socket.sock")
+    requireFileUnixDomainSocketPath("socket.sock")
+    assertThatThrownBy { requireFileUnixDomainSocketPath("") }.isInstanceOf(IllegalArgumentException::class.java)
+    assertThatThrownBy { requireFileUnixDomainSocketPath("@socket.sock") }
+      .isInstanceOf(IllegalArgumentException::class.java)
+      .hasMessageContaining("Abstract")
+    assertThatThrownBy { requireFileUnixDomainSocketPath("\u0000socket.sock") }
+      .isInstanceOf(IllegalArgumentException::class.java)
   }
 
   @Test
-  fun `stop suppresses MultiException when all nested exceptions are InvalidPathException`() {
+  fun `stop suppresses exception when all nested exceptions are InvalidPathException`() {
     val server = mock(Server::class.java)
-    val multi = MultiException()
-    multi.add(InvalidPathException("http-ingress.sock", "Nul character not allowed"))
-    multi.add(InvalidPathException("istio-proxy.sock", "Nul character not allowed"))
-    multi.add(InvalidPathException("grpc-ingress.sock", "Nul character not allowed"))
+    val exception = InvalidPathException("http-ingress.sock", "Nul character not allowed")
+    exception.addSuppressed(InvalidPathException("istio-proxy.sock", "Nul character not allowed"))
+    exception.addSuppressed(InvalidPathException("grpc-ingress.sock", "Nul character not allowed"))
     `when`(server.isRunning).thenReturn(true)
-    doThrow(multi).`when`(server).stop()
+    doThrow(exception).`when`(server).stop()
 
     val jettyService = jettyService(server)
 
@@ -44,17 +44,29 @@ class JettyServiceTest {
   }
 
   @Test
-  fun `stop rethrows MultiException when shutdown failures include non InvalidPathException`() {
+  fun `stop rethrows when an InvalidPathException has a different suppressed failure`() {
     val server = mock(Server::class.java)
-    val multi = MultiException()
-    multi.add(InvalidPathException("http-ingress.sock", "Nul character not allowed"))
-    multi.add(RuntimeException("unexpected shutdown failure"))
+    val exception = InvalidPathException("http-ingress.sock", "Nul character not allowed")
+    exception.addSuppressed(RuntimeException("unexpected shutdown failure"))
     `when`(server.isRunning).thenReturn(true)
-    doThrow(multi).`when`(server).stop()
+    doThrow(exception).`when`(server).stop()
 
     val jettyService = jettyService(server)
 
-    assertThatThrownBy { jettyService.stop() }.isSameAs(multi)
+    assertThatThrownBy { jettyService.stop() }.isSameAs(exception)
+  }
+
+  @Test
+  fun `stop rethrows exception when the primary failure is not an InvalidPathException`() {
+    val server = mock(Server::class.java)
+    val exception = RuntimeException("unexpected shutdown failure")
+    exception.addSuppressed(InvalidPathException("http-ingress.sock", "Nul character not allowed"))
+    `when`(server.isRunning).thenReturn(true)
+    doThrow(exception).`when`(server).stop()
+
+    val jettyService = jettyService(server)
+
+    assertThatThrownBy { jettyService.stop() }.isSameAs(exception)
   }
 
   private fun jettyService(server: Server): JettyService {

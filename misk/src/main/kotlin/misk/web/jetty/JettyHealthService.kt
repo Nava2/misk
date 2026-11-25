@@ -14,18 +14,18 @@ import misk.logging.getLogger
 import misk.web.WebConfig
 import mu.KLogger
 import okhttp3.HttpUrl
-import org.eclipse.jetty.http.UriCompliance
+import org.eclipse.jetty.ee9.servlet.ServletContextHandler
+import org.eclipse.jetty.ee9.servlet.ServletHolder
+import org.eclipse.jetty.ee9.websocket.server.config.JettyWebSocketServletContainerInitializer
 import org.eclipse.jetty.io.ConnectionStatistics
+import org.eclipse.jetty.server.Handler
 import org.eclipse.jetty.server.HttpConfiguration
 import org.eclipse.jetty.server.HttpConnectionFactory
 import org.eclipse.jetty.server.NetworkConnector
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.server.handler.StatisticsHandler
-import org.eclipse.jetty.servlet.ServletContextHandler
-import org.eclipse.jetty.servlet.ServletHolder
 import org.eclipse.jetty.util.thread.ExecutorThreadPool
-import org.eclipse.jetty.websocket.server.config.JettyWebSocketServletContainerInitializer
 
 /**
  * The JettyHealthService is a standalone Jetty Instance for managing health checks in Misk. It is unique in that it
@@ -93,7 +93,7 @@ internal constructor(
     val httpConnectionFactory =
       HttpConnectionFactory(
         HttpConfiguration().apply {
-          uriCompliance = UriCompliance.RFC3986
+          uriCompliance = MISK_URI_COMPLIANCE
           sendServerVersion = false
           setFormEncodedMethods()
         }
@@ -112,7 +112,7 @@ internal constructor(
         .apply {
           port = webConfig.health_port
           idleTimeout = webConfig.idle_timeout
-          webConfig.override_shutdown_idle_timeout?.let { shutdownIdleTimeout = it }
+          applyShutdownIdleTimeout(webConfig.override_shutdown_idle_timeout)
           reuseAddress = true
           name = "health"
           webConfig.host?.let { host = it }
@@ -131,7 +131,8 @@ internal constructor(
 
     JettyWebSocketServletContainerInitializer.configure(servletContextHandler, null)
     server.addManaged(servletContextHandler)
-    statisticsHandler.handler = servletContextHandler
+    val handlers = Handler.Sequence().apply { addHandler(servletContextHandler) }
+    statisticsHandler.handler = handlers
   }
 
   private fun setupServer() {

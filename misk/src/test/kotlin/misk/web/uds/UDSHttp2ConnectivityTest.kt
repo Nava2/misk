@@ -38,7 +38,7 @@ class UDSHttp2ConnectivityTest {
 
   private lateinit var client: OkHttpClient
 
-  private var socketName: String = "@udstest" + UUID.randomUUID().toString()
+  private var socketName: String = "/tmp/udstest-socket-" + UUID.randomUUID().toString()
 
   @BeforeEach
   fun createClient() {
