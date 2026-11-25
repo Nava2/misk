@@ -141,7 +141,7 @@ constructor(
             if (response is Response) {
               JettyServletUpstreamResponse(response)
             } else {
-              GenericServletUpstreamResponse(response)
+              GenericServletUpstreamResponse(request.protocol, response)
             },
           requestBody = request.inputStream.source().buffer(),
           responseBody = responseBody,

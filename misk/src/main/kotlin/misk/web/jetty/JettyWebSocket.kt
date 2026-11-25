@@ -7,6 +7,7 @@ import misk.web.ServletHttpCall
 import misk.web.actions.WebAction
 import misk.web.actions.WebSocket
 import misk.web.actions.WebSocketListener
+import misk.web.http.HttpVersion
 import okhttp3.Headers
 import okio.ByteString
 import okio.ByteString.Companion.toByteString
@@ -67,6 +68,10 @@ internal class JettyWebSocket(val request: JettyServerUpgradeRequest, val respon
 
       override val headers: Headers
         get() = response.headers()
+
+      override val httpVersion: HttpVersion
+        // A websocket is established by an HTTP/1.1 upgrade request.
+        get() = HttpVersion.HTTP_1_1
 
       override fun setHeader(name: String, value: String) {
         response.setHeader(name, value)
