@@ -112,7 +112,7 @@ internal constructor(
         .apply {
           port = webConfig.health_port
           idleTimeout = webConfig.idle_timeout
-          webConfig.override_shutdown_idle_timeout?.let { shutdownIdleTimeout = it }
+          applyShutdownIdleTimeout(webConfig.override_shutdown_idle_timeout)
           reuseAddress = true
           name = "health"
           webConfig.host?.let { host = it }
