@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie
 import misk.api.HttpRequest
 import misk.web.actions.WebSocket
 import misk.web.actions.WebSocketListener
+import misk.web.http.HttpVersion
 import misk.web.mediatype.MediaRange
 import okhttp3.Headers
 import okhttp3.MediaType
@@ -43,6 +44,13 @@ interface HttpCall : HttpRequest {
 
   /** Timestamp when the request was received (milliseconds since epoch) */
   val requestReceivedTimestamp: Long
+
+  /**
+   * The HTTP protocol version of this call. Defaults to HTTP/1.1 so that existing [HttpCall] implementations keep
+   * compiling; misk's own implementations report the real version.
+   */
+  val httpVersion: HttpVersion
+    get() = HttpVersion.HTTP_1_1
 
   /** Set both the raw network status code and the meaningful status code that's recorded in metrics */
   fun setStatusCodes(statusCode: Int, networkStatusCode: Int)

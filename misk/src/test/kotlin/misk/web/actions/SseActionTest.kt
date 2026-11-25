@@ -32,6 +32,7 @@ import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
 import okhttp3.sse.EventSources
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -227,8 +228,28 @@ class SseActionTest {
     assertThat(response.code).isEqualTo(200)
     assertThat(response.header("Content-Type")).isEqualTo("text/event-stream")
     assertThat(response.header("Cache-Control")).isEqualTo("no-cache")
-    assertThat(response.header("Connection")).isEqualTo("keep-alive")
+    // Keep-Alive is an HTTP/1.0 mechanism only; HTTP/1.1 connections are persistent by default.
+    assertThat(response.protocol).isEqualTo(okhttp3.Protocol.HTTP_1_1)
+    assertThat(response.header("Connection")).isNull()
     assertThat(response.header("X-Accel-Buffering")).isEqualTo("no")
+  }
+
+  @Test
+  fun `HTTP 1_0 sse requests are served`() {
+    // Jetty manages the Connection header itself for HTTP/1.0 (it sends an empty one on this streaming response
+    // whether or not misk sets keep-alive), so only assert that the stream is served.
+    val url = jettyService.httpServerUrl
+    java.net.Socket(url.host, url.port).use { socket ->
+      socket.soTimeout = 5_000
+      socket
+        .getOutputStream()
+        .write("GET /sse HTTP/1.0\r\nAccept: ${MediaTypes.SERVER_EVENT_STREAM}\r\n\r\n".toByteArray())
+      socket.getOutputStream().flush()
+      val reader = socket.getInputStream().bufferedReader()
+      val headers = generateSequence { reader.readLine() }.takeWhile { it.isNotEmpty() }.toList()
+      assertThat(headers.first()).endsWith("200 OK")
+      assertThat(headers.map { it.lowercase() }).contains("content-type: text/event-stream")
+    }
   }
 
   class TestModule : KAbstractModule() {

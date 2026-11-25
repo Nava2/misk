@@ -20,6 +20,7 @@ import misk.web.RequestDeadlineTimeout
 import misk.web.RequestDeadlinesConfig
 import misk.web.ServletHttpCall
 import misk.web.WebConfig
+import misk.web.http.HttpVersion
 import misk.web.actions.WebAction
 import misk.web.actions.WebSocketListener
 import misk.web.interceptors.RequestDeadlineInterceptor.Companion.MISK_REQUEST_DEADLINE_HEADER
@@ -474,8 +475,11 @@ class RequestDeadlineInterceptorTest {
   }
 
   // Simple fake UpstreamResponse for testing
-  internal class FakeUpstreamResponse(override var statusCode: Int = 200, override val headers: Headers = headersOf()) :
-    ServletHttpCall.UpstreamResponse {
+  internal class FakeUpstreamResponse(
+    override var statusCode: Int = 200,
+    override val headers: Headers = headersOf(),
+    override val httpVersion: HttpVersion = HttpVersion.HTTP_1_1,
+  ) : ServletHttpCall.UpstreamResponse {
     private val headersBuilder = Headers.Builder()
     private val trailersMap = mutableMapOf<String, String>()
 

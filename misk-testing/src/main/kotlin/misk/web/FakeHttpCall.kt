@@ -3,6 +3,7 @@ package misk.web
 import jakarta.servlet.http.Cookie
 import misk.web.actions.WebSocket
 import misk.web.actions.WebSocketListener
+import misk.web.http.HttpVersion
 import okhttp3.Headers
 import okhttp3.Headers.Companion.headersOf
 import okhttp3.HttpUrl
@@ -28,6 +29,8 @@ constructor(
   var webSocket: WebSocket? = null,
   var webSocketListener: WebSocketListener? = null,
   override var cookies: List<Cookie> = listOf(),
+  // Last, to keep existing positional constructor calls source compatible.
+  override val httpVersion: HttpVersion = HttpVersion.HTTP_1_1,
 ) : HttpCall {
   // Add as a separate property to maintain backward compatibility
   override val requestReceivedTimestamp: Long = System.currentTimeMillis()
