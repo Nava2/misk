@@ -152,7 +152,8 @@ abstract class McpTool<I : Any> {
    * Provides a user-friendly display name for the tool that may be shown in user interfaces. Defaults to the tool's
    * [name] if not overridden.
    */
-  open val title: String = name
+  open val title: String
+    get() = name
 
   /**
    * Hint indicating whether this tool performs read-only operations.
@@ -212,9 +213,7 @@ abstract class McpTool<I : Any> {
     // Parse the input arguments from the request
     val parsedInput =
       try {
-        requireNotNull(request.arguments?.decode(inputType.serializer().cast<I>())) {
-          "No input arguments provided to tool '$name'. Expected input type: $inputType."
-        }
+        (request.arguments ?: EmptyJsonObject).decode(inputType.serializer().cast<I>())
       } catch (e: SerializationException) {
         return ToolResult(
             TextContent(
